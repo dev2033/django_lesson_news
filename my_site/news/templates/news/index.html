@@ -13,7 +13,12 @@
   {% for item in news %}
     <div class="card mb-3">
       <div class="card-header">
-        Категория: <a href="{% url 'category' item.category.pk %}">
+        Категория: <a href="{{ item.category.get_absolute.url }}
+
+        {% comment %}
+        {% url 'category' item.category.pk %}
+        {% endcomment %}">
+
           {{ item.category }}
       </a>
       </div>
@@ -24,8 +29,8 @@
                      <img src="{{ item.photo.url }}" class="mr-3" width="350">
                   {% endif %}
                   <h5 class="card-title">{{ item.title }}</h5>
-                    <p class="card-text">{{ item.content }}</p>
-                    <a href="#" class="btn btn-primary">Читать далее</a>
+                    <p class="card-text">{{ item.content|safe|linebreaks }}</p>
+                    <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Читать далее</a>
               </div>
           </div>
       </div>
