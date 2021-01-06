@@ -1,5 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
+"""
+Весь закоментированный код представлений является альтернативой
+кода представлений на основе классов
+"""
+# from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
 from .models import News, Category
 from .forms import NewsForm
@@ -57,25 +62,49 @@ class NewsByCategory(ListView):
 #     return render(request, template_name='news/category.html', context=context)
 
 
-def view_news(request, news_id):
-    # news_item = News.objects.get(pk=news_id)
-    news_item = get_object_or_404(News, pk=news_id)
-    context = {
-        "news_item": news_item,
-    }
-    return render(request, 'news/view_news.html', context=context)
+class ViewNews(DetailView):
+    """Показ новости"""
+    model = News
+    # pk_url_kwarg = 'news_id'
+
+    # используется джангой по умолчанию
+    # template_name = 'news/news_detail.html'
+    context_object_name = 'news_item'
 
 
-def add_news(request):
-    if request.method == 'POST':
-        form = NewsForm(request.POST)
-        if form.is_valid():
-            # для формы не связаной с моделью
-            # news = News.objects.create(**form.cleaned_data)
+# def view_news(request, news_id):
+#     # news_item = News.objects.get(pk=news_id)
+#     news_item = get_object_or_404(News, pk=news_id)
+#     context = {
+#         "news_item": news_item,
+#     }
+#     return render(request, 'news/view_news.html', context=context)
 
-            # для формы связоной с моделью
-            news = form.save()
-            return redirect(news)
-    else:
-        form = NewsForm()
-    return render(request, 'news/add_news.html', {'form': form})
+
+class CreateNews(CreateView):
+    """Создание новости"""
+    form_class = NewsForm
+    template_name = 'news/add_news.html'
+    # нужна для редиректа на какой то url после добавлений новости
+    # (если в моделях не используется get_absolute_url)
+
+    # success_url = '/'
+    
+    # также можно использовать функцию reverse_lazy - ленивый url reverse
+
+    # success_url = reverse_lazy('home')
+
+
+# def add_news(request):
+#     if request.method == 'POST':
+#         form = NewsForm(request.POST)
+#         if form.is_valid():
+#             # для формы не связаной с моделью
+#             # news = News.objects.create(**form.cleaned_data)
+#
+#             # для формы связоной с моделью
+#             news = form.save()
+#             return redirect(news)
+#     else:
+#         form = NewsForm()
+#     return render(request, 'news/add_news.html', {'form': form})
