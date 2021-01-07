@@ -3,8 +3,9 @@
 кода представлений на основе классов
 """
 # from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+# from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import News, Category
 from .forms import NewsForm
@@ -21,6 +22,8 @@ class HomeNews(ListView):
     model = News
     template_name = 'news/home_news_list.html'
     context_object_name = 'news'
+    paginate_by = 4
+
     # queryset = News.objects.select_related('category')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -92,7 +95,7 @@ class ViewNews(DetailView):
 #     return render(request, 'news/view_news.html', context=context)
 
 
-class CreateNews(CreateView):
+class CreateNews(LoginRequiredMixin, CreateView):
     """Создание новости"""
     form_class = NewsForm
     template_name = 'news/add_news.html'
@@ -104,6 +107,12 @@ class CreateNews(CreateView):
     # также можно использовать функцию reverse_lazy - ленивый url reverse
 
     # success_url = reverse_lazy('home')
+
+    # перекидывает пользователя на страницу авторизации для добавления новости
+    # login_url = 'login/'
+
+    # также можно вызывать исключение - доступ запрещен (403 ошибка)
+    raise_exception = True
 
 
 # def add_news(request):
