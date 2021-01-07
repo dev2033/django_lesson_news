@@ -11,10 +11,17 @@ from .forms import NewsForm
 
 
 class HomeNews(ListView):
-    """Выводит все новости на главной странице"""
+    """
+    Выводит все новости на главной странице.
+    Метод select_related('category'), сокращает колличество
+    запросов к БД, объединяя множество sql запросов в 1 сложный.
+    Также можно использовать атрибут queryset, указывая
+    Модель.Объекты.select_related(и название связи)
+    """
     model = News
     template_name = 'news/home_news_list.html'
     context_object_name = 'news'
+    # queryset = News.objects.select_related('category')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -22,7 +29,7 @@ class HomeNews(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(is_published=True)
+        return News.objects.filter(is_published=True).select_related('category')
 
 
 # def index(request):
@@ -35,7 +42,11 @@ class HomeNews(ListView):
 
 
 class NewsByCategory(ListView):
-    """Выводит категории новости"""
+    """
+    Выводит категории новости
+    Метод select_related('category'), сокращает колличество
+    запросов к БД, объединяя множество sql запросов в 1 сложный
+    """
     model = News
     template_name = 'news/home_news_list.html'
     context_object_name = 'news'
@@ -48,7 +59,7 @@ class NewsByCategory(ListView):
 
     def get_queryset(self):
         return News.objects.filter(category_id=self.kwargs['category_id'],
-                                   is_published=True)
+                                   is_published=True).select_related('category')
 
 
 # def get_category(request, category_id):
@@ -89,7 +100,7 @@ class CreateNews(CreateView):
     # (если в моделях не используется get_absolute_url)
 
     # success_url = '/'
-    
+
     # также можно использовать функцию reverse_lazy - ленивый url reverse
 
     # success_url = reverse_lazy('home')
