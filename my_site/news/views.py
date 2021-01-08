@@ -8,9 +8,10 @@ from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
+# from django.core.mail import send_mail
 
 from .models import News, Category
-from .forms import NewsForm, UserRegisterForm, UserLoginForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm, ContactForm
 
 
 def register(request):
@@ -165,3 +166,25 @@ class CreateNews(LoginRequiredMixin, CreateView):
 #     else:
 #         form = NewsForm()
 #     return render(request, 'news/add_news.html', {'form': form})
+
+
+# def sending_by_email(request):
+#     """Отправляет письма на email"""
+#     if request.method == 'POST':
+#         form = ContactForm(request.POST)
+#         if form.is_valid():
+#             mail = send_mail(
+#                 form.cleaned_data['subject'],
+#                 form.cleaned_data['content'],
+#                 'наша почта',
+#                 ['список почт куда отправить'],
+#                 fail_silently=False
+#             )
+#             if mail:
+#                 messages.success(request, 'Письмо отправлено')
+#                 return redirect('sending_by_email')
+#             else:
+#                 messages.error(request, 'Ошибка регистрации')
+#     else:
+#         form = ContactForm()
+#     return render(request, 'news/send_email.html', {"form": form})

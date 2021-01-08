@@ -11,7 +11,8 @@ from .views import (
     CreateNews,
     register,
     user_login,
-    user_logout
+    user_logout,
+    # sending_by_email,
 )
 
 
@@ -24,6 +25,7 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', user_login, name='login'),
     path('logout/', user_logout, name='logout'),
+    # path('sending_by_email/', sending_by_email, name='sending_by_email'),
 
 
     # path('', index, name='home'),

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Обратная связь :: {{ block.super }}
+{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Обратная связь</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-outline-primary">
+            Отправить
+        </button>
+    </div>
+</form>
+
+{% endblock %}
+

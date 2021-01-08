@@ -9,6 +9,20 @@ from .models import News
 import re
 
 
+class ContactForm(forms.Form):
+    """Форма для отправки писем по Email"""
+    subject = forms.CharField(
+        max_length=100,
+        label='Тема',
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    content = forms.CharField(
+        max_length=100,
+        label='Текст',
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 5})
+    )
+
+
 class UserLoginForm(AuthenticationForm):
     """Форма для авторизации пользователя"""
     username = forms.CharField(
