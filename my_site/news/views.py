@@ -2,13 +2,50 @@
 Весь закоментированный код представлений является альтернативой
 кода представлений на основе классов
 """
-# from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 # from django.urls import reverse_lazy
+from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login, logout
 
 from .models import News, Category
-from .forms import NewsForm
+from .forms import NewsForm, UserRegisterForm, UserLoginForm
+
+
+def register(request):
+    """Регистрация пользователей"""
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Вы успешно зарегистрированы')
+            return redirect('home')
+        else:
+            messages.error(request, 'Ошибка регистрации')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'news/register.html', {'form': form})
+
+
+def user_login(request):
+    """Авторизация пользователей"""
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserLoginForm()
+    return render(request, 'news/login.html', {'form': form})
+
+
+def user_logout(request):
+    """Logout пользователя"""
+    logout(request)
+    return redirect('login')
 
 
 class HomeNews(ListView):
@@ -112,7 +149,7 @@ class CreateNews(LoginRequiredMixin, CreateView):
     # login_url = 'login/'
 
     # также можно вызывать исключение - доступ запрещен (403 ошибка)
-    raise_exception = True
+    # raise_exception = True
 
 
 # def add_news(request):

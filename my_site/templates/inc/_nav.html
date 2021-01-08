@@ -19,6 +19,26 @@
                 </li>
               {% endif %}
           </ul>
+
+            <span class="navbar-text">
+                {% if request.user.is_authenticated %}
+                    Добро пожаловать, {{ user.username }}!
+                <button class="btn btn btn-outline-danger">
+                    <a href="{% url 'logout' %}">Выход</a>
+                </button>
+                {% else %}
+                <button class="btn btn btn-outline-info">
+                    <a href="{% url 'register' %}">
+                        Регистрация
+                    </a>
+                </button>
+                <button class="btn btn btn-outline-info">
+                    <a href="{% url 'login' %}">
+                        Авторизация
+                    </a>
+                </button>
+                {% endif %}
+            </span>
         </div>
-      </div>
-     </nav>
+    </div>
+ </nav>
