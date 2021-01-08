@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from .views import (
     # index,
@@ -17,6 +18,10 @@ from .views import (
 
 
 urlpatterns = [
+    # Таким образом кэшируется страница сайта,
+    # в представлениях основанные на классах
+    # path('', cache_page(60)(HomeNews.as_view()), name='home'),
+
     path('', HomeNews.as_view(), name='home'),
     path('category/<int:category_id>', NewsByCategory.as_view(),
          name='category'),

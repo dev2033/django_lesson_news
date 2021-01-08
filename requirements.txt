@@ -5,6 +5,7 @@ Django==3.1.5
 django-ckeditor==6.0.0
 django-debug-toolbar==3.2
 django-js-asset==1.2.2
+django-ranged-response==0.2.0
 ipython==7.19.0
 ipython-genutils==0.2.0
 jedi==0.18.0
@@ -16,6 +17,7 @@ prompt-toolkit==3.0.9
 ptyprocess==0.7.0
 Pygments==2.7.3
 pytz==2020.5
+six==1.15.0
 sqlparse==0.4.1
 traitlets==5.0.5
 wcwidth==0.2.5

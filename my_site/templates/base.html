@@ -23,7 +23,22 @@
       <div class="row">
 
           <div class="col-md-3">
+            <!--
+            Таким образом происходит кэширование
+            фрагментов шаблона, в данном случае это sidebar
+            -->
+            {% comment %}
+            {% load cache %}
+
+            {% cache 30 sidebar %}
+            {% endcomment %}
+
             {% block sidebar %}SIDEBAR{% endblock %}
+
+            {% comment %}
+            {% endcache %}
+            {% endcomment %}
+
           </div>
 
           <div class="col-md-9">
